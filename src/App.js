@@ -8,7 +8,8 @@ function Board({ xIsNext, squares, onPlay }) { // Board es controlado por las pr
   function handleClick(i) {
   if (squares[i] || calculateWinner(squares)) {
     return;
-  }  
+  }
+// Almacenar un historial de movimientos
   const nextSquares = squares.slice();
     if (xIsNext) {
       nextSquares[i] = "X"
@@ -50,17 +51,21 @@ function Board({ xIsNext, squares, onPlay }) { // Board es controlado por las pr
 
 export default function Game() {
     // Almacenar el estado del juego en el componente Game
-  const [xIsNext, setXIsNext] = useState(true);
-  const [history, setHistory] = useState([Array(9).fill(null)]);
-  const currentSquares = history[history.length - 1];
+  const [history, setHistory] = useState([Array(9).fill(null)]); // crea una matriz con nueve elementos y establece cada uno de ellos en null.
+  const [currentMove, setCurrentMove] = useState(0);
+  
+  const xIsNext = currentMove%2 ===0;
+  const currentSquares = history[currentMove];
   function handlePlay(nextSquares) {
     // crea una nueva matriz que contiene todos los elementos en history 
-    setHistory([...history, nextSquares]);
-    setXIsNext(!xIsNext);
+    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+    setHistory(nextHistory);
+    setCurrentMove(nextHistory.length-1)
   }
-
+  // Se recomienda asignar las key adecuadas cada vez que cree listas dinámicas
+  // tambien se puede considerar reestructurar los datos para que las tenga.
   function jumpTo(nextMove) {
-    // TODO
+    setCurrentMove(nextMove);
   }
   // .map para transformar la matriz de movimientos history en elementos React que representen botones en la pantalla
   const moves = history.map((squares, move) => {
@@ -71,7 +76,7 @@ export default function Game() {
       description = 'Ir al inicio del juego';
     }
     return (
-      <li>
+      <li key={move}>
         <button onClick={() => jumpTo(move)}>{description}</button>
       </li>
     );
