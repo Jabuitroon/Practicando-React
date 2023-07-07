@@ -1,7 +1,7 @@
 // Componente interactivo 
 // Propiedad useState
 import { useState } from "react";
-
+import { Twifollowcard } from "./Twifollowcard.jsx";
 // Construir el tablero
 function Board({ xIsNext, squares, onPlay }) { // Board es controlado por las props que recibe. 
 
@@ -25,7 +25,7 @@ function Board({ xIsNext, squares, onPlay }) { // Board es controlado por las pr
   if (winner) {
     status = "Ganador: " + winner;
   } else {
-    status = "Siguiente jugador: " + (xIsNext ? "X" : "O");
+    status = "Turno para: " + (xIsNext ? "X" : "O");
   }
 
   return  <>
@@ -81,13 +81,34 @@ export default function Game() {
       </li>
     );
   });
+
+  const format = (userName) => `@${userName}` //Podemos pasar funciones o callbacks como props
+  const crearElement = (<span>@Elemento</span>) //Creando un elemento para pasarlo como prop
+
+  const miduObj = {name: 'Mgueloon',
+                  isFollowing:true,
+                  userName: 'midudev'}
+let contador = 1;
+const infoMoves = history.map((move) =>{
+  let description = 'Estás en el movimiento #' + contador++;
+  return <p>{description}</p>
+});
   return(
     <div className="game">
       <div className="game-board">
       <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
+      <div>
+         {/* se pasan funciones como props */}
+         <Twifollowcard formatUserName={format} isFollowing userName="Matazmb" name="Mguelón"/>
+        <Twifollowcard formatUserName={format} isFollowing={false} userName="Matazmb" name="Mguelón"/>{/* <Twifollowcard formatUserName={crearElement} userName="Matazmb" name="Mguelón"/>  Se pasan elementos como props*/}
+        {/* <Twifollowcard {...miduObj}/> enviando props desde un Obj == rest operator pero espreferible ser declarativo*/}
+      </div>
       <div className="game-info">
         <ol>{moves}</ol>
+      </div>
+      <div className="turno-info">
+        <p>{infoMoves}</p>
       </div>
     </div>
   )  
