@@ -92,7 +92,7 @@ body {
 .tw-followcard{
   width: 350px;
   padding: 15px;
-  background-color: rgba(106, 90, 205, .2);
+  background-color: rgb(24, 15, 78);
   display: flex;
   justify-content: space-between;
   font-size: .8rem;
@@ -107,30 +107,14 @@ body {
 .tw-followcard-header{
   display: flex;
 }
+strong{
+  color: slateblue;
+}
 .tw-followcard-info{
   margin-left: 5px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-}
-.tw-followcard-btn{
-  color: #fff;
-  background-color: slateblue;
-  margin-left: 16px;
-  border: 0;
-  border-radius: 999px;
-  padding: 6px 16px;
-  font-weight: bold;
-}
-.tw-Nofollow-btn{
-  border: 0;
-  border-radius: 999px;
-  padding: 6px 16px;
-  font-weight: bold;
-}
-
-strong{
-  color: slateblue;
 }
 
 .tw-Nofollow-btn:hover{
@@ -138,9 +122,34 @@ strong{
   background-color: slateblue;
   transition: .3s ease background-color;
 }
+.tw-Nofollow-btn{
+  border: 0;
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-weight: bold;
+}
+.tw-followcard-btn{
+  color: #fff;
+  background-color: slateblue;
+  margin-left: 16px;
+  width: 130px;
+  border: 0;
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-weight: bold;
+}
 
 .tw-followcard-btn:hover{
   color: red;
-  background-color: rgba(255, 0, 0, 0.329);
+  background-color: rgba(255, 0, 0, .2);
   transition: .3s ease background-color;
+}
+.StopFollow{
+  display: none;
+}
+.tw-followcard-btn:hover .StopFollow{
+  display: block;
+}
+.tw-followcard-btn:hover .Normal{
+  display: none;
 }

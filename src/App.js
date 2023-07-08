@@ -2,6 +2,7 @@
 // Propiedad useState
 import { useState } from "react";
 import { Twifollowcard } from "./Twifollowcard.jsx";
+import { Listas } from "./Listas.jsx"
 // Construir el tablero
 function Board({ xIsNext, squares, onPlay }) { // Board es controlado por las props que recibe. 
 
@@ -93,16 +94,21 @@ const infoMoves = history.map((move) =>{
   let description = 'Estás en el movimiento #' + contador++;
   return <p>{description}</p>
 });
-  return(
+
+  //Conociendo al virtual dom
+  const [name, setName] = useState('Julio')
+  return( // return es lo que devuelvo para renderizar
     <div className="game">
       <div className="game-board">
       <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div>
-         {/* se pasan funciones como props */}
-         <Twifollowcard formatUserName={format} isFollowing userName="Matazmb" name="Mguelón"/>
-        <Twifollowcard formatUserName={format} isFollowing={false} userName="Matazmb" name="Mguelón"/>{/* <Twifollowcard formatUserName={crearElement} userName="Matazmb" name="Mguelón"/>  Se pasan elementos como props*/}
+        {/* se pasan funciones como props */}
+        <Twifollowcard formatUserName={format} initialFollowage userName="Matazmb" name={name}/>
+        <Twifollowcard formatUserName={format} initialFollowage={false} userName="Matazmb" name="Mguelón"/>{/* <Twifollowcard formatUserName={crearElement} userName="Matazmb" name="Mguelón"/>  Se pasan elementos como props*/}
         {/* <Twifollowcard {...miduObj}/> enviando props desde un Obj == rest operator pero espreferible ser declarativo*/}
+        <button onClick={()=> setName('Buitroon')}>Cambiar nombre</button>
+        <Listas />
       </div>
       <div className="game-info">
         <ol>{moves}</ol>

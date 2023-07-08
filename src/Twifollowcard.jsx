@@ -3,16 +3,17 @@ import logo from './assets/cara.jpg';
 //poder ejecutarcodigo arbitrario segun lo que suceda en los compoentes
 import { useState } from 'react';
 
-export function Twifollowcard({formatUserName ,userName ='Ukn', name}) { 
+export function Twifollowcard({formatUserName ,userName ='Ukn', name, initialFollowage}) { 
     //La base de reutilizar un componente en React es que sea parametrizable metiante las prop, 
     //enviando y recibiendo la info que necesitamos procesar
-const [isFollowing, setIsFolowing] = useState(false) //Destructurando pae
-const text = isFollowing ? 'Siguiendo' : 'Seguir'
+const [isFollowing, setIsFolowing] = useState(initialFollowage) //Destructurando pae inicializando un estado con una prop
+let text = isFollowing ? 'Siguiendo' : 'Seguir'
 const btnClass = isFollowing ? 'tw-followcard-btn' : 'tw-Nofollow-btn'
     
     const handleClick = () =>{
         setIsFolowing(!isFollowing) //le digo a la funcion setIsFolowing que invierta esta variable que tiene un boolean
     }
+
     return(
         <article className="tw-followcard">
             <header className="tw-followcard-header">
@@ -25,7 +26,13 @@ const btnClass = isFollowing ? 'tw-followcard-btn' : 'tw-Nofollow-btn'
                 </div>
             </header>
             <aside>
-                <button className={btnClass} onClick={handleClick} >{text}</button>
+                <button className={btnClass} onClick={handleClick}>
+                    <span className='Normal'>{text}</span>
+                    <span className='StopFollow'>Dejar de seguir</span>
+                </button>
+                {/* React renderiza el componente dependiendo de ese primer render
+                React hace una "comparación" entre otro render, pero los cambios se ejecutan directamente
+                donde estoy declarando, como en este caso elestado del boton */}
             </aside>
         </article>
     )
