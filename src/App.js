@@ -1,65 +1,22 @@
 // Componente interactivo 
 // Propiedad useState
 import { useState } from "react";
-import { Twifollowcard } from "./Twifollowcard.jsx";
-import { Listas } from "./Listas.jsx"
-// Construir el tablero
-function Board({ xIsNext, squares, onPlay }) { // Board es controlado por las props que recibe. 
-
-  function handleClick(i) {
-  if (squares[i] || calculateWinner(squares)) {
-    return;
-  }
-// Almacenar un historial de movimientos
-  const nextSquares = squares.slice();
-    if (xIsNext) {
-      nextSquares[i] = "X"
-    } else {
-      nextSquares[i] = "O"
-    }
-    //El componente Game puede actualizar el componente Board cuando el usuario hace clic en un cuadrado
-    onPlay(nextSquares); 
-  }
-
-  const winner = calculateWinner(squares);
-  let status;
-  if (winner) {
-    status = "Ganador: " + winner;
-  } else {
-    status = "Turno para: " + (xIsNext ? "X" : "O");
-  }
-
-  return  <>
-          <div className="status">{status}</div>
-          <div className="board-row">
-          {/* Pasar datos a través de props */}
-              <Square value={squares[0]} onSquareClick={() => handleClick(0)} /> {/* Cada Cuadrado ahora recibirá una prop de value que será 'X', 'O', o null para los cuadrados vacíos. */}
-              <Square value={squares[1]} onSquareClick={() => handleClick(1)}/>
-              <Square value={squares[2]} onSquareClick={() => handleClick(2)}/>
-          </div>
-          <div className="board-row">
-              <Square value={squares[3]} onSquareClick={() => handleClick(3)}/>
-              <Square value={squares[4]} onSquareClick={() => handleClick(4)}/>
-              <Square value={squares[5]} onSquareClick={() => handleClick(5)}/>
-          </div>
-          <div className="board-row">
-              <Square value={squares[6]} onSquareClick={() => handleClick(6)}/>
-              <Square value={squares[7]} onSquareClick={() => handleClick(7)}/>
-              <Square value={squares[8]} onSquareClick={() => handleClick(8)}/>
-          </div>
-          </>
-}
+import { Twifollowcard } from "./components/Twifollowcard.jsx";
+import { Listas } from "./components/Listas.jsx"
+import "./tictt.css"
+import { TicTacToe } from "./main.jsx"
 
 export default function Game() {
     // Almacenar el estado del juego en el componente Game
   const [history, setHistory] = useState([Array(9).fill(null)]); // crea una matriz con nueve elementos y establece cada uno de ellos en null.
   const [currentMove, setCurrentMove] = useState(0);
-  
   const xIsNext = currentMove%2 ===0;
-  const currentSquares = history[currentMove];
+  const currentSquares = history[currentMove]; //el actual turno sobre el array history
+
   function handlePlay(nextSquares) {
     // crea una nueva matriz que contiene todos los elementos en history 
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+    //Spread operator transforma un array en una lista de argumentos
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length-1)
   }
@@ -71,6 +28,7 @@ export default function Game() {
   // .map para transformar la matriz de movimientos history en elementos React que representen botones en la pantalla
   const moves = history.map((squares, move) => {
     let description;
+    console.log(move)
     if (move > 0) {
       description = 'Ir al movimiento #' + move;
     } else {
@@ -82,25 +40,24 @@ export default function Game() {
       </li>
     );
   });
+          const format = (userName) => `@${userName}` //Podemos pasar funciones o callbacks como props
+          const crearElement = (<span>@Elemento</span>) //Creando un elemento para pasarlo como prop
 
-  const format = (userName) => `@${userName}` //Podemos pasar funciones o callbacks como props
-  const crearElement = (<span>@Elemento</span>) //Creando un elemento para pasarlo como prop
-
-  const miduObj = {name: 'Mgueloon',
-                  isFollowing:true,
-                  userName: 'midudev'}
-let contador = 1;
-const infoMoves = history.map((move) =>{
-  let description = 'Estás en el movimiento #' + contador++;
-  return <p>{description}</p>
-});
-
+          // const miduObj = {name: 'Mgueloon',
+          //                   isFollowing:true,
+          //                   userName: 'midudev'}
+          let contador = 1;
+          const infoMoves = history.map((move) =>{
+            let description = 'Estás en el movimiento #' + contador++;
+            return <p>{description}</p>
+          });
   //Conociendo al virtual dom
   const [name, setName] = useState('Julio')
-  return( // return es lo que devuelvo para renderizar
+return( // return es lo que devuelvo para renderizar
     <div className="game">
-      <div className="game-board">
-      <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+      <div className="game-ttc">
+          <p>{infoMoves}</p>
+          <TicTacToe xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay}/>
       </div>
       <div>
         {/* se pasan funciones como props */}
@@ -113,32 +70,6 @@ const infoMoves = history.map((move) =>{
       <div className="game-info">
         <ol>{moves}</ol>
       </div>
-      <div className="turno-info">
-        <p>{infoMoves}</p>
-      </div>
     </div>
   )  
-}
-
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
-}
-function Square({value, onSquareClick}) {
-  return <button className="square" onClick={onSquareClick}>{value}</button>
 }

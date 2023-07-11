@@ -1,4 +1,4 @@
-import logo from './assets/cara.jpg';
+import logo from '../assets/cara.jpg';
 // Importar Hooks permiten añadir funcionalidades a los componentes de react,
 //poder ejecutarcodigo arbitrario segun lo que suceda en los compoentes
 import { useState } from 'react';
