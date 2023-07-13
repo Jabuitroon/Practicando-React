@@ -8,8 +8,6 @@ import { TicTacToe } from './main.jsx'
 
 export default function Game () {
   // Almacenar el estado del juego en el componente Game
-  // window.localStorage.setItem('xIsNext', JSON.stringify(xIsNext))
-
   const [history, setHistory] = useState(() => {
     const boardFromStorage = window.localStorage.getItem('history') // Local storage guarda lo que yo le pase en un string
     if (boardFromStorage) return JSON.parse(boardFromStorage)
@@ -25,7 +23,6 @@ export default function Game () {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares]
     // Spread operator transforma un array en una lista de argumentos
     setHistory(nextHistory)
-    window.localStorage.setItem('history', JSON.stringify(nextHistory))
     guardar(nextHistory)
     setCurrentMove(nextHistory.length - 1)
   }
